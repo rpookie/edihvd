@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>white rose for my love</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* exactly the requested pink background (no change) */
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #ffd1dc 0%, #ffb6c1 70%, #faa0b5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      padding: 16px;
+    }
+
+    /* bouquet wrapper – subtle translucent card, keeps the pink bg visible */
+    .bouquet-card {
+      background-color: rgba(255, 240, 245, 0.3); /* extra light, lets bg shine */
+      backdrop-filter: blur(2px);
+      border-radius: 70px 70px 50px 50px;
+      box-shadow: 0 20px 30px rgba(170, 80, 100, 0.3),
+                  0 0 0 6px #ffe6ec,
+                  0 0 0 12px #ffb7c5;
+      padding: 30px 30px 25px 30px;
+      max-width: 800px;
+      width: fit-content;
+      transition: 0.2s;
+    }
+
+    /* single bouquet container – flex column centered */
+    .bouquet {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* heading with heart accent - updated message */
+    .title {
+      font-size: 2.2rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: #9f3f58;
+      text-shadow: 0 2px 5px #ffdae3;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .title span {
+      font-size: 2.8rem;
+      transform: scale(1.1);
+    }
+
+    /* ===== ROSE BUNCH – exactly 10 roses ===== */
+    .rose-bunch {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 10px 90px;
+      max-width: 1000px;
+      margin: 20px 0 10px 0;
+    }
+    .rose-b {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 0px 3px;
+      max-width: 650px;
+      margin: 0px 0 15px 0;
+    }
+    /* each rose */
+    .rose {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 1px;
+      filter: drop-shadow(0 8px 12px rgba(140, 70, 90, 0.25));
+      transition: transform 0.2s ease;
+    }
+    .rose:hover {
+      transform: translateY(-5px);
+    }
+
+    /* bloom : container for petals */
+    .bloom {
+      position: relative;
+      width: 74px;
+      height: 74px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: -5px;
+    }
+
+    /* base petal style – white with whisper of pink */
+    .petal {
+      position: absolute;
+      background: radial-gradient(circle at 30% 30%, 
+        #fffafd 0%, 
+        #f7e4ec 40%, 
+        #edd6e2 90%);
+      border-radius: 70% 30% 60% 40% / 50% 40% 60% 50%;
+      box-shadow: 0 3px 7px rgba(150, 100, 110, 0.15), inset -2px -2px 6px rgba(250, 230, 240, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transform-origin: center;
+    }
+
+    /* five petals arrangement – default (medium) */
+    .petal-1 { width: 52px; height: 54px; transform: rotate(-10deg) translateX(-5px) translateY(-6px); }
+    .petal-2 { width: 54px; height: 56px; transform: rotate(25deg) translateX(9px) translateY(-7px); }
+    .petal-3 { width: 48px; height: 52px; transform: rotate(70deg) translateX(8px) translateY(9px); }
+    .petal-4 { width: 50px; height: 50px; transform: rotate(125deg) translateX(-6px) translateY(11px); }
+    .petal-5 { width: 46px; height: 50px; transform: rotate(185deg) translateX(-12px) translateY(-2px); }
+
+    /* inner cupped petal */
+    .inner-petal {
+      position: absolute;
+      background: radial-gradient(circle at 40% 40%, 
+        #fff7fb 0%, 
+        #fbe6f0 80%);
+      border-radius: 60% 40% 50% 50%;
+      box-shadow: inset 0 0 8px #fff, 0 2px 6px rgba(190, 120, 140, 0.2);
+      width: 30px;
+      height: 28px;
+      transform: rotate(-3deg);
+      top: 18px;
+      left: 17px;
+      border: 1px solid rgba(255, 250, 240, 0.9);
+      z-index: 10;
+    }
+    /* tiny stamen */
+    .stamen {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: #ffd2a4;
+      border-radius: 50%;
+      top: 28px;
+      left: 28px;
+      box-shadow: 0 0 8px #ffb0b0;
+      z-index: 20;
+      border: 1px solid #fff1d6;
+    }
+
+    /* rose variations – small & bud (unchanged) */
+    .rose.small .bloom {
+      width: 56px;
+      height: 56px;
+    }
+    .rose.small .petal {
+      background: radial-gradient(circle at 30% 30%, #fdf3f8, #f0dbe8);
+    }
+    .rose.small .inner-petal {
+      width: 26px; height: 24px; top: 16px; left: 15px;
+    }
+    .rose.small .stamen {
+      top: 25px; left: 25px;
+    }
+
+    .rose.bud .bloom {
+      width: 48px;
+      height: 48px;
+    }
+    .rose.bud .petal {
+      background: #fae7f1;
+    }
+    .rose.bud .petal-1 { width: 40px; height: 40px; }
+    .rose.bud .petal-2 { width: 38px; height: 40px; }
+    .rose.bud .petal-3 { width: 36px; height: 38px; }
+    .rose.bud .inner-petal, .rose.bud .stamen { display: none; }
+
+    /* ===== MAKE THE FIRST THREE ROSES BIGGER ===== */
+    /* bigger size class – overrides default & small */
+    .rose.big {
+      transform: scale(1.25);        /* uniform 25% larger */
+      margin: 0 6px;                 /* a bit more air */
+      z-index: 2;                    /* slightly forward */
+    }
+    .rose.big .bloom {
+      width: 76px;
+      height: 76px;
+    }
+    /* keep petal backgrounds fresh */
+    .rose.big .petal {
+      background: radial-gradient(circle at 30% 30%, #fff9fe, #f9e2ef 45%, #f0d2e0 90%);
+    }
+    .rose.big .inner-petal {
+      width: 38px;
+      height: 36px;
+      top: 20px;
+      left: 19px;
+    }
+    .rose.big .stamen {
+      width: 9px;
+      height: 9px;
+      top: 32px;
+      left: 32px;
+    }
+    /* bigger stem for bigger roses? optional – just a bit thicker */
+    .rose.big .stem {
+      width: 7px;
+      height: 62px;
+    }
+    .rose.big .leaf {
+      transform: scale(1.15) rotate(-15deg) skewX(-5deg);
+      left: -11px;
+    }
+    .rose.big .leaf.right {
+      transform: scale(1.15) rotate(70deg) skewX(5deg);
+      left: 7px;
+    }
+
+    /* stem and leaves (default) */
+    .stem {
+      width: 5px;
+      height: 52px;
+      background: linear-gradient(145deg, #628b5b, #3f6f47);
+      border-radius: 40% 40% 20% 20% / 20% 20% 80% 80%;
+      box-shadow: 0 7px 5px rgba(50, 70, 30, 0.15);
+      margin-top: -5px;
+      position: relative;
+      z-index: 5;
+    }
+    .leaf {
+      position: relative;
+      width: 22px;
+      height: 12px;
+      background: linear-gradient(130deg, #558b4e, #74a86b);
+      border-radius: 90% 0 70% 20%;
+      transform: rotate(-15deg) skewX(-5deg);
+      left: -9px;
+      top: -10px;
+      box-shadow: -2px 4px 5px rgba(50, 70, 30, 0.2);
+      border: 1px solid #b8daaf;
+    }
+    .leaf.right {
+      transform: rotate(70deg) skewX(5deg);
+      left: 7px;
+      top: -26px;
+      background: linear-gradient(50deg, #598b4f, #6da05f);
+    }
+
+    /* ribbon tying the bouquet together */
+    .ribbon-bow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 20px 0 5px 0;
+      width: 100%;
+    }
+    .ribbon-side {
+      width: 70px;
+      height: 16px;
+      background: #ff98aa;
+      border-radius: 30% 30% 50% 50% / 60% 60% 20% 20%;
+      box-shadow: 0 5px 0 #bc4d64, 0 8px 12px rgba(140, 40, 60, 0.3);
+      transform: skewX(-5deg);
+      border: 1px solid #ffb7c5;
+    }
+    .ribbon-center {
+      width: 120px;  /* slightly wider for empty content */
+      height: 32px;
+      background: #ffb3c6;
+      box-shadow: 0 5px 0 #c65f78;
+      border-radius: 40% 40% 20% 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #652b39;
+      letter-spacing: 2px;
+      font-weight: 400;
+      border: 1px solid #ffccd6;
+    }
+    .ribbon-side.right {
+      transform: skewX(5deg);
+    }
+
+    /* small message - updated */
+    .greeting {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 1.5rem;
+      color: #882b44;
+      font-weight: 300;
+      background: rgba(255, 220, 230, 0.7);
+      padding: 8px 28px;
+      border-radius: 50px;
+      backdrop-filter: blur(3px);
+      box-shadow: inset 0 0 0 2px #ffeef2;
+      line-height: 1.4;
+    }
+    .greeting small {
+      font-size: 1.1rem;
+      color: #b14d68;
+      display: block;
+    }
+
+    /* floating hearts (unchanged) */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .floating-hearts span {
+      position: absolute;
+      font-size: 1.8rem;
+      opacity: 0.25;
+      color: #ff89a5;
+      animation: float 8s infinite ease-in-out;
+      user-select: none;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg) scale(0.8); opacity: 0.15; }
+      100% { transform: translateY(-20vh) rotate(340deg) scale(1.4); opacity: 0.3; }
+    }
+
+    @media (max-width: 550px) {
+      .bloom { width: 55px; height: 55px; }
+      .title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- background hearts (pink bg remains) -->
+  <div class="floating-hearts">
+    <span style="left: 8%; animation-duration: 12s;">❤️</span>
+    <span style="left: 22%; animation-duration: 15s;">❤️</span>
+    <span style="left: 37%; animation-duration: 10s;">❤️</span>
+    <span style="left: 53%; animation-duration: 18s;">❤️</span>
+    <span style="left: 72%; animation-duration: 14s;">❤️</span>
+    <span style="left: 91%; animation-duration: 16s;">❤️</span>
+  </div>
+
+  <!-- main bouquet card -->
+  <div class="bouquet-card">
+    <div class="bouquet">
+      <!-- heading with custom message -->
+      <div class="title">
+        <span>🌹</span> HAPPY HEARTS DAY, LOVEE!!! <span>🌹</span>
+      </div>
+
+      <!-- 10 roses grouped – first three are BIG -->
+      <div class="rose-bunch">
+        <!-- 1. BIG full bloom -->
+        <div class="rose big">
+          <div class="bloom">
+            <div class="petal petal-1"></div>
+            <div class="petal petal-2"></div>
+            <div class="petal petal-3"></div>
+            <div class="petal petal-4"></div>
+            <div class="petal petal-5"></div>
+            <div class="inner-petal"></div>
+            <div class="stamen"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf"></div>
+            <div class="leaf right"></div>
+          </div>
+        </div>
+
+        <!-- 2. BIG small variant (but big overrides) -->
+        <div class="rose small big">   <!-- big class takes precedence due to order in css -->
+          <div class="bloom">
+            <div class="petal petal-1"></div>
+            <div class="petal petal-2"></div>
+            <div class="petal petal-3"></div>
+            <div class="petal petal-4"></div>
+            <div class="petal petal-5"></div>
+            <div class="inner-petal"></div>
+            <div class="stamen"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf"></div>
+            <div class="leaf right"></div>
+          </div>
+        </div>
+
+        <!-- 3. BIG bud style (but big makes it larger) -->
+        <div class="rose-b">
+        <!-- 1. BIG full bloom -->
+        <div class="rose big">
+          <div class="bloom">
+            <div class="petal petal-1"></div>
+            <div class="petal petal-2"></div>
+            <div class="petal petal-3"></div>
+            <div class="petal petal-4"></div>
+            <div class="petal petal-5"></div>
+            <div class="inner-petal"></div>
+            <div class="stamen"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf"></div>
+            <div class="leaf right"></div>
+          </div>
+        </div>
+
+
+      <!-- ribbon holding the bouquet together (empty center as in your code) -->
+      <div class="ribbon-bow">
+        <div class="ribbon-side"></div>
+        <div class="ribbon-center"></div>
+        <div class="ribbon-side right"></div>
+      </div>
+
+      <!-- valentine message exactly as you wrote -->
+      <div class="greeting">
+        lovelots! may all your dreams come true. godspeed!!
+      </div>
+    </div>
+  </div>
+</body>
+</html>
